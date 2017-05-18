@@ -36,7 +36,6 @@ System/
 /History
 /__Previews
 /Project Logs for carsystem
-*.PcbDoc
 *.PrjPCBStructure
 
 # Windows image file caches

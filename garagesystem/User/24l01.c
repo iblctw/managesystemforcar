@@ -17,7 +17,7 @@ void NRF24L01_Init(void)
 	NRF24L01_Write_Buf(NRF_WRITE_REG+TX_ADDR,(u8*)TX_ADDRESS,TX_ADR_WIDTH);//写TX节点地址 
 	NRF24L01_Write_Buf(NRF_WRITE_REG+RX_ADDR_P0,(u8*)RX_ADDRESS,RX_ADR_WIDTH);//写RX节点地址
 	NRF24L01_Write_Buf(NRF_WRITE_REG+RX_ADDR_P1,(u8*)RX_ADDRESS1,RX_ADR_WIDTH);//写RX节点地址	
-	NRF24L01_Write_Buf(NRF_WRITE_REG+RX_ADDR_P2,(u8*)FRX_ADDRESS2,1);//写RX节点地址
+	NRF24L01_Write_Buf(NRF_WRITE_REG+RX_ADDR_P2,(u8*)RX_ADDRESS2,1);//写RX节点地址
 	//  	NRF24L01_Write_Buf(NRF_WRITE_REG+RX_ADDR_P0,(u8*)RX_ADDRESS,RX_ADR_WIDTH); //设置TX节点地址,主要为了使能ACK，RX_ADDR_P0为0通道，地址相同就能使能		  
    	
   	
@@ -175,8 +175,8 @@ void SEND_BUF(u8 *buf)//无线发送时发送模式，发送完又变成接收模式，主模式是发送模
 	//u8 team = 0; 
 	
 	NRF24L01_CE_L;
-	if(NRF24L01_Check()) printf("can`t find 24l01!");
-	else printf("find 24l01 successfully!");
+//	if(NRF24L01_Check()) printf("can`t find 24l01!2");
+//	else printf("find 24l01 successfully!2");
 	NRF24L01_Write_Reg(NRF_WRITE_REG+CONFIG,0x0e);//发射模式
 	NRF24L01_CE_H;
 	delay_us(15);
@@ -187,6 +187,7 @@ void SEND_BUF(u8 *buf)//无线发送时发送模式，发送完又变成接收模式，主模式是发送模
 	NRF24L01_CE_L;
 	NRF24L01_Write_Reg(NRF_WRITE_REG+CONFIG, 0x0f);//退出前配置成接收模式
 	NRF24L01_CE_H;	
+	printf("send ok");
 }
 
 

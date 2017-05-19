@@ -696,27 +696,30 @@ void RC522_0_Handler(void)		//读卡器0处理程序
 	char status;
 	rc522=0;
 	RC522_NSS_1_H;
-	//NRF24L01_CSN_H;
+	NRF24L01_CSN_H;
 	status = PcdRequest(REQ_ALL,g_ucTempbuf);
-	//printf("测试！！！");
+//	printf("测试！！！");
 	if(status==MI_OK)
 	{
 		status = PcdAnticoll(card);	 //防冲撞
+	
 		if (status== MI_OK)
-		{ USART1->DR = 'a' ;		   
+		{ 		   
 			printf("卡序列：=%02x %02x %02x %02x\r\n",card[0],card[1],card[2],card[3]);
 			send[5]=card[0]/100+'0';  //仅输入卡号第一字节
 			temp=card[0]%100;
 			send[6]=temp/10+'0';
 			send[7]=temp%10+'0';
 			status = PcdSelect(card);
+    //	operation(data);//操作门和道路灯函数 
+//			printf("open door");
 			if(status==MI_OK)
 			{
 				WaitCardOff();            
 				delay_ms(10);
-//				NRF24L01_TxPacket(send);
-
-			SEND_BUF(send);//发送数组到上位机，等待回传数据
+//			NRF24L01_TxPacket(send);
+			  SEND_BUF(send);//发送数组到上位机，等待回传数据
+				
 			}
 		}
 	}			
@@ -838,13 +841,13 @@ void operation(u8 *data)  //一共会接收到4种数据，预约号 2层定位号 停车号 出库号
 {
 	if(data[2]=='#')  //预约号 01#3
 	{	
-		if(data[3]>'0'&& data[3]<='4')//'1'代表是第几层，返回的正确格式为 01#3 ，代表已预约1层，预约了3号车位
+		if(data[3]>'0'&& data[3]<='7')//'1'代表是第几层，返回的正确格式为 01#3 ，代表已预约1层，预约了3号车位
 		{
 			GPIO_Write(GPIOD,0x0000);
 			open_door();
 		}
-		if (data[3]>'4')//''代表是第2层，返回的正确格式为 01#7 ，代表已预约2层，预约了7号车位
-		{
+//		if (data[3]>'4')//''代表是第2层，返回的正确格式为 01#7 ，代表已预约2层，预约了7号车位
+//		{
 			elevator_up();
 			switch(data[3])// 注意：上位机返回的格式只有4个数据长度，我利用第4个字节来
 			{
@@ -855,7 +858,7 @@ void operation(u8 *data)  //一共会接收到4种数据，预约号 2层定位号 停车号 出库号
 				 case  '7':{	GPIO_Write(GPIOD,0x005C);			
 							}break;		 	
 			}
-		}
+//		}
 	}
 	if(data[0]=='#')  //定位号 #7 #8 #9   
 	{	

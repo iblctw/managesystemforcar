@@ -240,7 +240,7 @@
             this.panel1.Controls.Add(this.label10);
             this.panel1.Controls.Add(this.label11);
             this.panel1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.panel1.Location = new System.Drawing.Point(22, 71);
+            this.panel1.Location = new System.Drawing.Point(6, 46);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(187, 246);
             this.panel1.TabIndex = 12;
@@ -514,9 +514,9 @@
             this.label22.ForeColor = System.Drawing.Color.Aqua;
             this.label22.Location = new System.Drawing.Point(11, 46);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(36, 39);
+            this.label22.Size = new System.Drawing.Size(55, 39);
             this.label22.TabIndex = 25;
-            this.label22.Text = "7";
+            this.label22.Text = "11";
             this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel2
@@ -528,9 +528,9 @@
             this.panel2.Controls.Add(this.button11);
             this.panel2.Controls.Add(this.textBox1);
             this.panel2.Controls.Add(this.label23);
-            this.panel2.Location = new System.Drawing.Point(-1, -4);
+            this.panel2.Location = new System.Drawing.Point(-1, -5);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(239, 439);
+            this.panel2.Size = new System.Drawing.Size(239, 440);
             this.panel2.TabIndex = 26;
             this.panel2.Visible = false;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
@@ -623,6 +623,7 @@
             this.panel3.BackColor = System.Drawing.Color.Transparent;
             this.panel3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel3.BackgroundImage")));
             this.panel3.Controls.Add(this.label16);
+            this.panel3.Controls.Add(this.panel1);
             this.panel3.Controls.Add(this.panel4);
             this.panel3.Controls.Add(this.label22);
             this.panel3.Location = new System.Drawing.Point(23, 25);
@@ -673,7 +674,6 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(243, 440);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.label20);
             this.Controls.Add(this.label19);
             this.Controls.Add(this.label18);

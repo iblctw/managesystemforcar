@@ -388,7 +388,7 @@ namespace 车库智能寻位系统
                 }
             }
          
-            label22.Text = Convert.ToString(7 - dd.cw);   //更改剩余车辆的数字
+            label22.Text = Convert.ToString(11 - dd.cw);   //更改剩余车辆的数字
             if (gd == ztsj)
             {
                

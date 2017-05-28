@@ -48,6 +48,8 @@ int main()
 	NRF24L01_RX_Mode();//配置为接收模式
 	//TIM4_ON;
 	GPIO_SetBits(GPIOD,GPIO_Pin_All);
+//	while(1);
+	
 	while(1)
 	{	
 			RC522_0_Handler();//注意要是换板，mini要禁用其他公用spi1的外设，无线的irq是PA1，其他的是PC5，要修改管脚基础配置，还要修改24l01。h的irq

@@ -10,7 +10,7 @@ void MOTOR0_Stop(void)
 	MOTOR0_IN4_L;	
 }
 
-void MOTOR0_Foreward(unsigned int ms)
+void MOTOR0_Foreward(unsigned int ms)						//
 {
 	MOTOR0_IN1_H;
 	MOTOR0_IN2_H;

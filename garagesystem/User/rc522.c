@@ -711,13 +711,10 @@ void RC522_0_Handler(void)		//读卡器0处理程序
 			send[6]=temp/10+'0';
 			send[7]=temp%10+'0';
 			status = PcdSelect(card);
-    //	operation(data);//操作门和道路灯函数 
-//			printf("open door");
 			if(status==MI_OK)
 			{
 				WaitCardOff();            
 				delay_ms(10);
-//			NRF24L01_TxPacket(send);
 			  SEND_BUF(send);//发送数组到上位机，等待回传数据
 				
 			}
@@ -839,45 +836,93 @@ void elevator_down(void)
 
 void operation(u8 *data)  //一共会接收到4种数据，预约号 2层定位号 停车号 出库号
 {
+	int deng = 0;
 	if(data[2]=='#')  //预约号 01#3
 	{	
-		if(data[3]>'0'&& data[3]<='7')//'1'代表是第几层，返回的正确格式为 01#3 ，代表已预约1层，预约了3号车位
+		if(data[3]>'0'&& data[3]>'0')//'1'代表是第几层，返回的正确格式为 01#3 ，代表已预约1层，预约了3号车位
 		{
 			GPIO_Write(GPIOD,0x0000);
 			open_door();
 		}
 //		if (data[3]>'4')//''代表是第2层，返回的正确格式为 01#7 ，代表已预约2层，预约了7号车位
 //		{
-			elevator_up();
+			//elevator_up();
 			switch(data[3])// 注意：上位机返回的格式只有4个数据长度，我利用第4个字节来
 			{
-				 case  '5':{	GPIO_Write(GPIOD,0x0012);	
+				 case  '1':{	GPIO_Write(GPIOD,0x0053);	deng = 1;
 							}break;
-				 case  '6':{	GPIO_Write(GPIOD,0x0038);			
+				 case  '2':{	GPIO_Write(GPIOD,0x0033);	deng = 2;
 							}break;
-				 case  '7':{	GPIO_Write(GPIOD,0x005C);			
-							}break;		 	
+				 case  '3':{	GPIO_Write(GPIOD,0x0005);	deng = 3;
+							}break;
+//				 case  '4':{	GPIO_Write(GPIOD,0x0009);	deng = 4;
+//							}break;
+				 case  '5':{	GPIO_Write(GPIOD,0x0009);	deng = 5;
+							}break;		
+//				 case  '5':{	GPIO_Write(GPIOD,0x0012);	
+//							}break;
+//				 case  '6':{	GPIO_Write(GPIOD,0x0038);			
+//							}break;
+//				 case  '7':{	GPIO_Write(GPIOD,0x005C);			
+//							}break;		 	
 			}
 //		}
 	}
-	if(data[0]=='#')  //定位号 #7 #8 #9   
+	if(data[0]=='#')  //定位号 #7 #8 #9   deng指的是模型上灯的位置，判断更改灯的引导状态
 	{	
-		switch(data[1])// 注意：上位机返回的格式只有4个数据长度，我利用第4个字节来
+		if(deng = 1)
+		{
+			switch(data[1])
 			{
-				 case  '7':{	GPIO_Write(GPIOD,0x0028);		
+				case  '1':{	GPIO_Write(GPIOD,0x0052);	
 							}break;
-				 case  '8':{	
-//								while(data[1]!='7')
-//								{
-//									printf("eeee");
-//									GPIO_Write(GPIOD,0x0028);
-//									break;
-//								}
-								GPIO_Write(GPIOD,0x0020);	
+				case  '2':{	GPIO_Write(GPIOD,0x0050);	
 							}break;
-				 case  '9':{	GPIO_Write(GPIOD,0xFFF2);//0xFFC0			
-							}break;		 	
+				case  '5':{	GPIO_Write(GPIOD,0x0040);	
+							}break;
+//				 case  '7':{	GPIO_Write(GPIOD,0x0028);		
+//							}break;
+//				 case  '8':{	
+////								while(data[1]!='7')
+////								{
+////									printf("eeee");
+////									GPIO_Write(GPIOD,0x0028);
+////									break;
+////								}
+//								GPIO_Write(GPIOD,0x0020);	
+//							}break;
+//				 case  '9':{	GPIO_Write(GPIOD,0xFFF2);//0xFFC0			
+//							}break;		 	
 			}	
+		}
+		if(deng = 2)
+		{
+			switch(data[1])
+			{
+				case  '1':{	GPIO_Write(GPIOD,0x0032);	
+							}break;
+				case  '2':{	GPIO_Write(GPIOD,0x0030);	
+							}break;
+				case  '5':{	GPIO_Write(GPIOD,0x0020);	
+							}break;
+			}
+		}
+		if(deng = 3)
+		{
+			switch(data[1])
+			{
+				case  '1':{	GPIO_Write(GPIOD,0x0004);	
+							}break;
+			}
+		}
+		if(deng = 5)
+		{
+			switch(data[1])
+			{
+				case  '1':{	GPIO_Write(GPIOD,0x0008);	
+							}break;
+			}
+		}
 	}
 	if(data[1]=='#')  //停车号 7#1#0000#1@ 8#1#0000#1@  出车号 6#0#0000#1@
 	{
@@ -890,36 +935,41 @@ void operation(u8 *data)  //一共会接收到4种数据，预约号 2层定位号 停车号 出库号
 				delay_ms(1000);
 					switch(data[0])// 注意：上位机返回的格式只有4个数据长度，我利用第4个字节来
 				{
-					 case  '5':{	GPIO_Write(GPIOD,0x0000);	 
+					 case  '1':{	GPIO_Write(GPIOD,0x0000);	 
 								}break;
-					 case  '6':{	GPIO_Write(GPIOD,0x0000);			
+					 case  '2':{	GPIO_Write(GPIOD,0x0000);			
 								}break;
-					 case  '7':{	GPIO_Write(GPIOD,0x0000);			
+					 case  '3':{	GPIO_Write(GPIOD,0x0000);			
 								}break;		 	
+					 case  '4':{	GPIO_Write(GPIOD,0x0000);			
+								}break;
+					 case  '5':{	GPIO_Write(GPIOD,0x0000);			
+								}break;
 				}
 			}		
 			if(data[2]=='0')  //出车号 
 			{
-				if(data[0]>'0'&& data[0]<='4')
-				{
+				GPIO_Write(GPIOD,0x0080); 
+//				if(data[0]>'0'&& data[0]<='4')
+//				{
 					out_open();	
-				}	
-				else
-				{	
-					GPIO_Write(GPIOD,0x0300);  //亮绿灯 亮出库道路灯
-				}	
+//				}	
+//				else
+//				{	
+//					GPIO_Write(GPIOD,0x0300);  //亮绿灯 亮出库道路灯
+//				}	
 			}
 		}	
 		else //出库号 0#1#0196#0@
 		{	
 			SEND_BUF(data);
-			elevator_down();
+			//elevator_down();
 		}	
 	} 
 	if(data[1]=='@')  //调试电机 @
 	{
 		GPIO_Write(GPIOD,0xFFFF);
-		elevator_down();
+	//	elevator_down();
 	}	
 }
 void location(u8 *data)
